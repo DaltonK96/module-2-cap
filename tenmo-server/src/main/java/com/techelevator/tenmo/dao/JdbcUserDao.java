@@ -40,7 +40,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public User getUserById(int userId) {
-        String sql = "SELECT * FROM tenmo_user WHERE user_id = ?";
+        String sql = "SELECT * FROM tenmo_user WHERE user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         if (results.next()) {
             return mapRowToUser(results);
@@ -52,7 +52,7 @@ public class JdbcUserDao implements UserDao {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        String sql = "select * from tenmo_user";
+        String sql = "select * from tenmo_user;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
