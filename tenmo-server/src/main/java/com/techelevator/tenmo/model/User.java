@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class User {
 
+   //Instance Variables
    private int id;
    private String username;
    @JsonIgnore // prevent from being sent to client
@@ -16,6 +17,7 @@ public class User {
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
 
+   //Constructors
    public User() { }
 
    public User(int id, String username, String password, String authorities) {
@@ -26,6 +28,7 @@ public class User {
       this.activated = true;
    }
 
+   //Getters and Setters
    public int getId() {
       return id;
    }
@@ -73,6 +76,7 @@ public class User {
       }
    }
 
+   //Methods
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;

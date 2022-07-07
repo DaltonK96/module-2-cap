@@ -4,8 +4,10 @@ import java.util.Objects;
 
 public class Authority {
 
+   //Instance Variable
    private String name;
 
+   //Getters and Setters
    public String getName() {
       return name;
    }
@@ -14,10 +16,12 @@ public class Authority {
       this.name = name;
    }
 
+   //Constructor
    public Authority(String name) {
       this.name = name;
    }
 
+   //Methods
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;

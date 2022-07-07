@@ -4,11 +4,13 @@ import javax.validation.constraints.NotEmpty;
 
 public class RegisterUserDTO {
 
+    //Instance Variables
     @NotEmpty
     private String username;
     @NotEmpty
     private String password;
 
+    //Getters and Setters
     public String getUsername() {
         return username;
     }

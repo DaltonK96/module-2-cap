@@ -4,10 +4,12 @@ import java.math.BigDecimal;
 
 public class Account {
 
+    //Instance Variables
     private int accountId;
     private int userId;
     private BigDecimal balance;
 
+    //Getters and Setters
     public int getAccountId() {
         return accountId;
     }

@@ -28,13 +28,18 @@ public class AccountController {
         this.userDao = userDao;
     }
 
-    @RequestMapping(value = "balance/{id}", method = RequestMethod.GET)
+    //TODO: Make sure that only the user who is logged in can check their own balance
+    //Check balance of account
+    @RequestMapping(value = "account/{id}/balance", method = RequestMethod.GET)
     public BigDecimal getBalance(@PathVariable int id) {
         BigDecimal balance = accountDao.getBalance(id);
         return balance;
     }
 
-    @RequestMapping(path = "listusers", method = RequestMethod.GET)
+    //TODO: Allow only the admin to see all users
+    //Check balance of all accounts
+    //@PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(path = "account/all", method = RequestMethod.GET)
     public List<User> listOfUsers() {
         List<User> accounts = userDao.findAll();
         return accounts;

@@ -5,9 +5,11 @@ package com.techelevator.tenmo.model;
  */
 public class LoginDTO {
 
+   //Instance Variables
    private String username;
    private String password;
 
+   //Getters and Setters
    public String getUsername() {
       return username;
    }
@@ -24,6 +26,8 @@ public class LoginDTO {
       this.password = password;
    }
 
+
+   //Method
    @Override
    public String toString() {
       return "LoginDTO{" +
