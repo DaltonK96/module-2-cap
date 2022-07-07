@@ -72,10 +72,19 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public String sendMoney(int userFrom, int userTo, BigDecimal amount) {
-        //Check userFrom != userTo
         if (userFrom == userTo) {
             return "Not allowed to send funds to oneself, you heathen.";
-        }
+        } else {
+            String sql = "UPDATE tenmo_account " +
+                "SET balance = balance - ? " +
+                " WHERE user_id = ? ;" +
+
+                "UPDATE tenmo_account " +
+                " SET balance = balance + ? " +
+                " WHERE user_id = ? ;";
+        jdbcTemplate.update(sql, amount, userFrom, amount, userTo); }
+        //Check userFrom != userTo
+
         //Check account balance !< transfer amount
         //Check transfer amount !<= 0
         //if (amount.compareTo(accountDao.getBalance(userFrom) == -1 &&))
@@ -84,15 +93,27 @@ public class JdbcTransferDao implements TransferDao{
         //SQL Decrease userFrom balance amount by transfer amount
         //Display status as Approved
 
-        return "";
+        return "Transfer Successful";
     }
 
     @Override
     public String requestMoney(int userFrom, int userTo, BigDecimal amount) {
+        if (userFrom == userTo) {
+            return "Not allowed to send funds to oneself, you heathen.";
+        } else {
+            String sql = "UPDATE tenmo_account " +
+                    "SET balance = balance - ? " +
+                    " WHERE user_id = ? ;" +
+
+                    "UPDATE tenmo_account " +
+                    " SET balance = balance + ? " +
+                    " WHERE user_id = ? ;";
+            jdbcTemplate.update(sql, amount, userFrom, amount, userTo); }
+
         //SQL Increase userTo balance amount by transfer amount if approved
         //SQL Decrease userFrom balance amount by transfer amount if approved
         //Display status as Pending
-        return null;
+        return "Transfer Pending";
     }
 
     //Update pending request to either approved or rejected
