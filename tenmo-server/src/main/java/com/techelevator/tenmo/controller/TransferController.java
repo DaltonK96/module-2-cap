@@ -5,6 +5,7 @@ import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class TransferController {
 
     //Get all transfers for one user
     @RequestMapping(value = "account/{id}/transfer", method = RequestMethod.GET)
-    public List<Transfer> getAllTransfers(@PathVariable int userId) {
+    public List<Transfer> getAllTransfers(@PathVariable("id") int userId) {
         List<Transfer> transfers = transferDao.getAllTransfers(userId);
         return transfers;
     }
@@ -43,9 +44,10 @@ public class TransferController {
     //Send transfer
     //send post(principal account from) who to send and how much (request body/param)
     @RequestMapping(value = "account/transfer", method = RequestMethod.POST)
-    public Account sendTransfer(@RequestBody Transfer transfer) {
+    public Account sendTransfer(@RequestBody TransferDTO transfer) {
         transferDao.sendMoney(transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
-        return accountDao.findAccountById(transfer.getAccountFrom());
+        Account account = accountDao.findAccountById(transfer.getAccountFrom());
+        return account;
     }
 
 

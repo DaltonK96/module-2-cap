@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -30,9 +31,10 @@ public class AccountController {
 
     //TODO: Make sure that only the user who is logged in can check their own balance
     //Check balance of account
-    @RequestMapping(value = "account/{id}/balance", method = RequestMethod.GET)
-    public BigDecimal getBalance(@PathVariable int id) {
-        BigDecimal balance = accountDao.getBalance(id);
+    @RequestMapping(value = "account/balance", method = RequestMethod.GET)
+    public BigDecimal getBalance(Principal user) {
+        String username = user.getName();
+        BigDecimal balance = accountDao.getBalance(userDao.findIdByUsername(username));
         return balance;
     }
 
