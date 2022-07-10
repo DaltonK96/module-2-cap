@@ -4,6 +4,7 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,9 @@ public class JdbcTransferDao implements TransferDao {
     private UserDao userDao;
     private TransferDao transferDao;
 
-    public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate, AccountDao accountDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.accountDao = accountDao;
     }
 
     //Retrieve all transfers for a user
@@ -75,22 +77,33 @@ public class JdbcTransferDao implements TransferDao {
     @Override
     public String sendMoney(int userFrom, int userTo, BigDecimal amount) {
         //Choose from a list of users to send money to
-        //userDao.findAll();
+        //userDao.findAll(); (MOVE TO CLIENT)
         //Check userFrom != userTo
+
+        BigDecimal currentBalance = accountDao.getBalance(userFrom);
+        int balanceComparisonResult = amount.compareTo(currentBalance);
+
         if (userFrom == userTo) {
-            return "Not allowed to send funds to oneself, you heathen.";
+            return "Not allowed to send funds to oneself.";
             //Check account balance !< transfer amount && Check transfer amount !<= 0
-        } else if (amount.compareTo(accountDao.getBalance(userFrom)) < 0 || amount.compareTo(new BigDecimal("0.00")) < 0) {
-            return "Not allowed to send less funds than available, you bitch.";
+        } else if (balanceComparisonResult > 0) {
+            return "Not allowed to send less funds than available.";
         } else {
             //SQL Decrease userFrom balance amount by transfer amount
             accountDao.subtractTEBucks(amount, userFrom);
             //SQL Increase userTo balance amount by transfer amount
             accountDao.addTEBucks(amount, userTo);
             //Display status as Approved
+
+                // get account number for sender
+                int accountSender = accountDao.findAccountById(userFrom).getAccountId();
+                // get account number for recipient
+                int accountRecipient = accountDao.findAccountById(userTo).getAccountId();
+
+            //Add transfer to tenmo_transfer
             String sqlStatus = "INSERT INTO tenmo_transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                     "VALUES (2, 2, ?, ?, ?);";
-            jdbcTemplate.update(sqlStatus, userFrom, userTo, amount);
+            jdbcTemplate.update(sqlStatus, accountSender, accountRecipient, amount);
             //Display the userFrom, userTo, and transfer amount
             return "Transfer Successful";
         }

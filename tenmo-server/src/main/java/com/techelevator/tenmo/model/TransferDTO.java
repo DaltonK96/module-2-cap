@@ -6,6 +6,8 @@ public class TransferDTO {
 
     private int accountFrom;
     private int accountTo;
+
+
     private BigDecimal amount;
 
     public int getAccountFrom() {
