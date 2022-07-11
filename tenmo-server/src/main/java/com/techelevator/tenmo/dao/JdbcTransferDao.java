@@ -32,8 +32,10 @@ public class JdbcTransferDao implements TransferDao {
         List<Transfer> transfers = new ArrayList<>();
         String sql = "SELECT * " +
                 "FROM tenmo_transfer " +
-                "JOIN tenmo_account ON tenmo_transfer.account_from = tenmo_account.account_id " +
-                "WHERE tenmo_account.user_id = ?;";
+                "JOIN tenmo_account ON tenmo_transfer.account_from = tenmo_account.account_id  " +
+                "JOIN transfer_type ON tenmo_transfer.transfer_type_id = transfer_type.transfer_type_id " +
+                "JOIN transfer_status ON tenmo_transfer.transfer_status_id = transfer_status.transfer_status_id " +
+                "WHERE user_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         while (results.next()) {
@@ -50,7 +52,9 @@ public class JdbcTransferDao implements TransferDao {
         String sql = "SELECT * " +
                 "FROM tenmo_transfer " +
                 "JOIN tenmo_account ON tenmo_transfer.account_from = tenmo_account.account_id " +
-                "WHERE transfer_status_id = 1 AND user_id = ?);";
+                "JOIN transfer_type ON tenmo_transfer.transfer_type_id = transfer_type.transfer_type_id " +
+                "JOIN transfer_status ON tenmo_transfer.transfer_status_id = transfer_status.transfer_status_id " +
+                "WHERE transfer_status_id = 1 AND user_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         while (results.next()) {
@@ -65,6 +69,9 @@ public class JdbcTransferDao implements TransferDao {
     public Transfer getTransferByID(int transferId) {
         String sql = "SELECT * " +
                 "FROM tenmo_transfer " +
+                "JOIN tenmo_account ON tenmo_transfer.account_from = tenmo_account.account_id  " +
+                "JOIN transfer_type ON tenmo_transfer.transfer_type_id = transfer_type.transfer_type_id " +
+                "JOIN transfer_status ON tenmo_transfer.transfer_status_id = transfer_status.transfer_status_id " +
                 "WHERE transfer_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
         if (results.next()) {
