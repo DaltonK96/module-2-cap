@@ -13,8 +13,6 @@ public class Transfer {
 
     private BigDecimal amount;
 
-    private String userTo;
-    private String userFrom;
 
     private int accountTo;
     private int accountFrom;
@@ -67,22 +65,6 @@ public class Transfer {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public String getUserTo() {
-        return userTo;
-    }
-
-    public void setUserTo(String userTo) {
-        this.userTo = userTo;
-    }
-
-    public String getUserFrom() {
-        return userFrom;
-    }
-
-    public void setUserFrom(String userFrom) {
-        this.userFrom = userFrom;
     }
 
     public int getAccountTo() {
